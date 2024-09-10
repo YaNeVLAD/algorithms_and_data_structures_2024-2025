@@ -9,7 +9,12 @@
 
 using namespace std;
 
+const int ARGUMENTS_COUNT_ERROR = 1;
+const int INPUT_FILE_OPEN_ERROR = 2;
+const int OUTPUT_FILE_OPEN_ERROR = 3;
+
 void reverseWord(char* word);
+void showErrorMessage(int code);
 
 int main(int argc, char* argv[])
 {
@@ -23,25 +28,25 @@ int main(int argc, char* argv[])
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
+    setlocale(LC_ALL, "Russian");
+
     if (argc <= 2)
     {
-        cout << "Передано недостаточное количество параметров." << endl;
-        cout << "После названия программы через пробел должен быть указан путь входного файла" << endl;
-        cout << "После него через пробел должен быть указан путь выходного файла" << endl;
+        showErrorMessage(ARGUMENTS_COUNT_ERROR);
         return EXIT_FAILURE;
     }
 
     inFile.open(argv[1]);
     if (inFile.is_open() == false)
     {
-        cout << "Входной файл не существует или находится в другом месте." << endl;
+        showErrorMessage(INPUT_FILE_OPEN_ERROR);
         return EXIT_FAILURE;
     }
 
     outFile.open(argv[2]);
     if (outFile.is_open() == false)
     {
-        cout << "Возникли проблемы с созданием выходного файла" << endl;
+        showErrorMessage(OUTPUT_FILE_OPEN_ERROR);
         return EXIT_FAILURE;
     }
 
@@ -92,5 +97,26 @@ void reverseWord(char* word)
     }
 }
 
+void showErrorMessage(int code)
+{
+    switch (code)
+    {
+    case ARGUMENTS_COUNT_ERROR:
+        cout << "Передано недостаточное количество параметров" << endl;
+        cout << "После названия программы через пробел должен быть указан путь входного файла" << endl;
+        cout << "После него через пробел должен быть указан путь выходного файла" << endl;
+        break;
+    case INPUT_FILE_OPEN_ERROR:
+        cout << "Входной файл не существует или находится в другом месте" << endl;
+        break;
+    case OUTPUT_FILE_OPEN_ERROR:
+        cout << "Возникли проблемы с созданием выходного файла" << endl;
+        break;
+    default:
+        cout << "Ошибки с таким кодом не существует" << endl;
+        return;  
+    }
+    cout << endl << "Программа завершила работу с ошибкой" << endl;
+}
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
 // Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
