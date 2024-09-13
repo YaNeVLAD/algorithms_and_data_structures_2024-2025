@@ -13,7 +13,7 @@
 
 using namespace std;
 
-const char SEPARATORS[] = {'\n', ' ', '/', '\\', ',', '.', ':', '&', '*', '^', '%', '$', '#', '@', '\'', '\"', '!', '?'};
+const char SEPARATORS[] = {'\n', ' ', '/', '\\', ',', '.', ':', '&', '*', '^', '%', '$', '#', '@', '\'', '\"', '!', '?', '(', ')', '-', '+', '=', '_', ';', '№'};
 
 bool isSeparator(char ch);
 void reverseWord(string &word);
@@ -47,16 +47,20 @@ bool isSeparator(char ch)
 		return true;
 	}
 	return false;
+
+	//return isspace(ch) || ispunct(ch);
 }
 
 void reverseWord(string &word)
 {
-	int len = word.length();
-	for (int i = 0; i < len / 2; ++i) {
-		char temp = word[i];
-		word[i] = word[len - i - 1];
-		word[len - i - 1] = temp;
-	}
+	//int len = word.length();
+	//for (int i = 0; i < len / 2; ++i) {
+	//	char temp = word[i];
+	//	word[i] = word[len - i - 1];
+	//	word[len - i - 1] = temp;
+	//}
+
+	reverse(word.begin(), word.end());
 }
 
 void processFile(ifstream &input, ofstream &output)
