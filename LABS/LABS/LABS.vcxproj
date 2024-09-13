@@ -24,7 +24,7 @@
     <ProjectGuid>{676c6077-5e94-414c-81be-6d4713807cb6}</ProjectGuid>
     <RootNamespace>LABS</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>LAB1_TASK2</ProjectName>
+    <ProjectName>LABS</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -128,7 +128,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="LAB1_TASK2.cpp" />
+    <ClCompile Include="lab1_task2.cpp" />
+    <ClCompile Include="lab2_task12.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="linked_lists_merge.h" />
+    <ClInclude Include="reverse_words_in_file.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

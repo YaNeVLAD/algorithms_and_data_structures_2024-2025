@@ -2,77 +2,56 @@
 //Автор: Ковалев Владислав ПС-21
 //Среда выполнения: Visual Studio 2022
 
-#include <Windows.h>
+//*& - передача указателя на адрес. Его можно изменить в ходе работы функции и он изменится для всей программы
+#include "reverse_words_in_file.h"
+
+#include <windows.h>
 #include <iostream>
 #include <fstream>
-#include <cstdlib>
 
 #include <chrono>
 
 using namespace std;
 
-const int ARGUMENTS_COUNT_ERROR = 1;
-const int INPUT_FILE_OPEN_ERROR = 2;
-const int OUTPUT_FILE_OPEN_ERROR = 3;
+const char SEPARATORS[] = {'\n', ' ', '/', '\\', ',', '.', ':', '&', '*', '^', '%', '$', '#', '@', '\'', '\"', '!', '?'};
 
-void reverseWord(char *word);
-void processFile(std::ifstream &input, std::ofstream &output);
-
+bool isSeparator(char ch);
+void reverseWord(string &word);
+void processFile(ifstream &input, ofstream &output);
+	
 void showErrorMessage(int code);
 
-int main(int argc, char *argv[])
+int reverseWordsInFile(ifstream &inFile, ofstream &outFile)
 {
-	std::ifstream inFile;
-	std::ofstream outFile;
-
-	auto start = std::chrono::high_resolution_clock::now();
-
-	SetConsoleCP(1251);
-	SetConsoleOutputCP(1251);
-
-	setlocale(LC_ALL, "Russian");
-
-	if (argc <= 2)
-	{
-		showErrorMessage(ARGUMENTS_COUNT_ERROR);
-		return EXIT_FAILURE;
-	}
-
-	inFile.open(argv[1]);
-	if (inFile.is_open() == false)
-	{
-		showErrorMessage(INPUT_FILE_OPEN_ERROR);
-		return EXIT_FAILURE;
-	}
-
-	outFile.open(argv[2]);
-	if (outFile.is_open() == false)
-	{
-		showErrorMessage(OUTPUT_FILE_OPEN_ERROR);
-		return EXIT_FAILURE;
-	}
+	auto start = chrono::high_resolution_clock::now();
 
 	processFile(inFile, outFile);
 
-	auto end = std::chrono::high_resolution_clock::now();
-
-	std::chrono::duration<double> duration = end - start;
-
-	inFile.close();
-	outFile.close();
-
-	system(("start " + std::string(argv[2])).c_str());
+	auto end = chrono::high_resolution_clock::now();
+	chrono::duration<double> duration = end - start;
 	
-	std::cout << "Время работы программы: " << duration.count() << " секунд" << std::endl;
+	cout << "Время работы программы: " << duration.count() << " с" << endl;
 
 	cout << "Программа успешно завершила работу" << endl;
 
 	return EXIT_SUCCESS;
 }
 
-void reverseWord(char *word)
+bool isSeparator(char ch)
 {
-	int len = strlen(word);
+	int i;
+	int len = ARRAYSIZE(SEPARATORS);
+	for (i = 0; i < len; i++)
+	{
+		if (ch == SEPARATORS[i])
+		return true;
+	}
+	return false;
+}
+
+void reverseWord(string &word)
+{
+	int len = word.length();
 	for (int i = 0; i < len / 2; ++i) {
 		char temp = word[i];
 		word[i] = word[len - i - 1];
@@ -80,61 +59,32 @@ void reverseWord(char *word)
 	}
 }
 
-void processFile(std::ifstream &input, std::ofstream &output)
+void processFile(ifstream &input, ofstream &output)
 {
 	char ch = 0;
 	int i = 0;
-	char word[255]{};
+	string word = "";
 
 	while (input.get(ch))
 	{
-		if (ch == ' ' || ch == '\n')
+		if (isSeparator(ch))
 		{
-			if (i > 0)
+			if (word.empty() == false)
 			{
-				word[i] = '\0';
 				reverseWord(word);
 				output << word;
-				i = 0;
+				word.clear();	
 			}
 			output << ch;
 		}
 		else
 		{
-			if (i < 255)
-			{
-				word[i++] = ch;
-			}
+			word += ch;
 		}
 	}
 
-	if (i > 0) {
-		word[i] = '\0';
+	if (word.empty() == false) {
 		reverseWord(word);
 		output << word;
 	}
 }
-
-void showErrorMessage(int code)
-{
-	switch (code)
-	{
-	case ARGUMENTS_COUNT_ERROR:
-		cout << "Передано недостаточное количество параметров" << endl;
-		cout << "После названия программы через пробел должен быть указан путь до входного файла" << endl;
-		cout << "После него через пробел должен быть указан путь до выходного файла" << endl;
-		break;
-	case INPUT_FILE_OPEN_ERROR:
-		cout << "Входной файл не существует или находится в другом месте" << endl;
-		break;
-	case OUTPUT_FILE_OPEN_ERROR:
-		cout << "Возникли проблемы с созданием выходного файла" << endl;
-		break;
-	default:
-		cout << "Ошибки с таким кодом не существует" << endl;
-		return;
-	}
-	cout << endl << "Программа завершила работу с ошибкой" << endl;
-}
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
