@@ -7,21 +7,25 @@
 #include <fstream>
 #include <cstdlib>
 
+#include <chrono>
+
 using namespace std;
 
 const int ARGUMENTS_COUNT_ERROR = 1;
 const int INPUT_FILE_OPEN_ERROR = 2;
 const int OUTPUT_FILE_OPEN_ERROR = 3;
 
-void reverseWord(char* word);
-void processFile(std::ifstream& input, std::ofstream& output);
+void reverseWord(char *word);
+void processFile(std::ifstream &input, std::ofstream &output);
 
 void showErrorMessage(int code);
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 	std::ifstream inFile;
 	std::ofstream outFile;
+
+	auto start = std::chrono::high_resolution_clock::now();
 
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
@@ -50,16 +54,23 @@ int main(int argc, char* argv[])
 
 	processFile(inFile, outFile);
 
+	auto end = std::chrono::high_resolution_clock::now();
+
+	std::chrono::duration<double> duration = end - start;
+
 	inFile.close();
 	outFile.close();
 
 	system(("start " + std::string(argv[2])).c_str());
+	
+	std::cout << "Время работы программы: " << duration.count() << " секунд" << std::endl;
 
 	cout << "Программа успешно завершила работу" << endl;
+
 	return EXIT_SUCCESS;
 }
 
-void reverseWord(char* word)
+void reverseWord(char *word)
 {
 	int len = strlen(word);
 	for (int i = 0; i < len / 2; ++i) {
@@ -69,7 +80,7 @@ void reverseWord(char* word)
 	}
 }
 
-void processFile(std::ifstream& input, std::ofstream& output)
+void processFile(std::ifstream &input, std::ofstream &output)
 {
 	char ch = 0;
 	int i = 0;
@@ -110,8 +121,8 @@ void showErrorMessage(int code)
 	{
 	case ARGUMENTS_COUNT_ERROR:
 		cout << "Передано недостаточное количество параметров" << endl;
-		cout << "После названия программы через пробел должен быть указан путь входного файла" << endl;
-		cout << "После него через пробел должен быть указан путь выходного файла" << endl;
+		cout << "После названия программы через пробел должен быть указан путь до входного файла" << endl;
+		cout << "После него через пробел должен быть указан путь до выходного файла" << endl;
 		break;
 	case INPUT_FILE_OPEN_ERROR:
 		cout << "Входной файл не существует или находится в другом месте" << endl;
