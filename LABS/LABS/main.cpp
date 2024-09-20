@@ -10,6 +10,7 @@ using namespace std;
 enum MenuOptions {
 	REVERSE_WORDS_IN_FILE,
 	LINKED_LISTS_MERGE,
+	FAMILY_TREE_SEARCH,
 	EXIT
 };
 
@@ -30,7 +31,7 @@ enum KeyCodes {
 
 void showErrorMessage(int code);
 
-void showMenu(int selectedOption);
+void renderMenu(int selectedOption);
 
 int main()
 {
@@ -43,7 +44,7 @@ int main()
 
 	while (true)
 	{
-		showMenu(selectedOption);
+		renderMenu(selectedOption);
 
 		int key = _getch();
 		if (key == SPECIAL_CODE)
@@ -118,6 +119,12 @@ int main()
 				system("pause");
 				break;
 			}
+			case FAMILY_TREE_SEARCH:
+			{
+				system("pause");
+				break;
+			}
+
 			case EXIT:
 				return EXIT_SUCCESS;
 			}
@@ -125,12 +132,13 @@ int main()
 	}
 }
 
-void showMenu(int selectedOption)
+void renderMenu(int selectedOption)
 {
 	system("cls");
-	cout << "==== Меню ====" << endl;
-	cout << (selectedOption == REVERSE_WORDS_IN_FILE ? "-> " : "   ") << "Переворот слов в файле" << endl;
-	cout << (selectedOption == LINKED_LISTS_MERGE ? "-> " : "   ") << "Слияние связных списков" << endl;
+	cout << "==== [Алгоритмы и структуры данных] ====" << endl;
+	cout << (selectedOption == REVERSE_WORDS_IN_FILE ? "-> " : "   ") << "Л.1 Переворот слов в файле" << endl;
+	cout << (selectedOption == LINKED_LISTS_MERGE ? "-> " : "   ") << "Л.2 Слияние связных списков" << endl;
+	cout << (selectedOption == FAMILY_TREE_SEARCH ? "-> " : "   ") << "Л.3 Определение отношений двух родственников" << endl;
 	cout << (selectedOption == EXIT ? "-> " : "   ") << "Выход" << endl;
 }
 
