@@ -24,12 +24,18 @@
     <ClCompile Include="lab2_task12.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="lab3_task12.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="reverse_words_in_file.h">
+    <ClInclude Include="lab1.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="linked_lists_merge.h">
+    <ClInclude Include="lab2.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="lab3.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

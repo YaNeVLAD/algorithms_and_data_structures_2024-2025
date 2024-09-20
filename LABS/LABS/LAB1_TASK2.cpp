@@ -1,13 +1,11 @@
-﻿//Задание: Задан текстовый файл. Переносов слов нет. Создать файл, в котором каждое слово будет записано в обратном порядке
+﻿//Задание: Задан текстовый файл. Переносов слов нет. 
+//Создать файл, в котором каждое слово будет записано в обратном порядке. (6)
 //Автор: Ковалев Владислав ПС-21
 //Среда выполнения: Visual Studio 2022
 
-//*& - передача указателя на адрес. Его можно изменить в ходе работы функции и он изменится для всей программы
-#include "reverse_words_in_file.h"
+#include "lab1.h"
 
 #include <windows.h>
-#include <iostream>
-#include <fstream>
 
 #include <chrono>
 
@@ -47,20 +45,18 @@ bool isSeparator(char ch)
 		return true;
 	}
 	return false;
-
-	//return isspace(ch) || ispunct(ch);
 }
 
 void reverseWord(string &word)
 {
-	//int len = word.length();
-	//for (int i = 0; i < len / 2; ++i) {
-	//	char temp = word[i];
-	//	word[i] = word[len - i - 1];
-	//	word[len - i - 1] = temp;
-	//}
+	int len = word.length();
+	for (int i = 0; i < len / 2; ++i) {
+		char temp = word[i];
+		word[i] = word[len - i - 1];
+		word[len - i - 1] = temp;
+	}
 
-	reverse(word.begin(), word.end());
+	//reverse(word.begin(), word.end());
 }
 
 void processFile(ifstream &input, ofstream &output)

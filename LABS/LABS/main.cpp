@@ -1,9 +1,12 @@
+//*& - передача указателя на адрес. Его можно изменить в ходе работы функции и он изменится для всей программы
 #include <Windows.h>
 #include <iostream>
 #include <fstream>
 #include <conio.h>
 //Programs
-#include "reverse_words_in_file.h";
+#include "lab1.h";
+#include "lab2.h";
+#include "lab3.h";
 
 using namespace std;
 
@@ -31,7 +34,7 @@ enum KeyCodes {
 
 void showErrorMessage(int code);
 
-void renderMenu(int selectedOption);
+void menu(int selectedOption);
 
 int main()
 {
@@ -44,7 +47,7 @@ int main()
 
 	while (true)
 	{
-		renderMenu(selectedOption);
+		menu(selectedOption);
 
 		int key = _getch();
 		if (key == SPECIAL_CODE)
@@ -116,11 +119,15 @@ int main()
 			}
 			case LINKED_LISTS_MERGE:
 			{
+				linkedListsMerge();
+
 				system("pause");
 				break;
 			}
 			case FAMILY_TREE_SEARCH:
 			{
+				//familyTreeSearch();
+
 				system("pause");
 				break;
 			}
@@ -132,7 +139,7 @@ int main()
 	}
 }
 
-void renderMenu(int selectedOption)
+void menu(int selectedOption)
 {
 	system("cls");
 	cout << "==== [Алгоритмы и структуры данных] ====" << endl;
