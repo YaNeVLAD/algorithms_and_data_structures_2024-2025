@@ -1,4 +1,5 @@
 //*& - передача указателя на адрес. Его можно изменить в ходе работы функции и он изменится для всей программы
+
 #include <Windows.h>
 #include <iostream>
 #include <fstream>
@@ -48,7 +49,6 @@ int main()
 	while (true)
 	{
 		menu(selectedOption);
-
 		int key = _getch();
 		if (key == SPECIAL_CODE)
 		{

@@ -5,16 +5,14 @@
 	Среда выполнения: Visual Studio 2022
 --------------------------------------------------------------------------------------------------*/
 
-
 #include "lab1.h"
-
-#include <windows.h>
 
 #include <chrono>
 
 using namespace std;
 
 const char SEPARATORS[] = {'\n', ' ', '/', '\\', ',', '.', ':', '&', '*', '^', '%', '$', '#', '@', '\'', '\"', '!', '?', '(', ')', '-', '+', '=', '_', ';', '№'};
+const int SEPARATORS_SIZE = 26;
 
 bool isSeparator(char ch);
 void reverseWord(string &word);
@@ -41,7 +39,7 @@ int reverseWordsInFile(ifstream &inFile, ofstream &outFile)
 bool isSeparator(char ch)
 {
 	int i;
-	int len = ARRAYSIZE(SEPARATORS);
+	int len = SEPARATORS_SIZE;
 	for (i = 0; i < len; i++)
 	{
 		if (ch == SEPARATORS[i])
