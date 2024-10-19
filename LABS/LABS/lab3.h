@@ -2,6 +2,4 @@
 
 #pragma once
 
-using namespace std;
-
-int familyTreeSearch(string firstPersonName, string secondPersonName);
+int familyTreeSearch(std::string firstPersonName, std::string secondPersonName);

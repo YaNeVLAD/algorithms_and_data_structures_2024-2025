@@ -20,15 +20,6 @@
 
 #include "lab2.h"
 
-#include <windows.h>
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <conio.h>
-#include <chrono>
-#include <queue>
-#include <cctype>
-
 enum MenuOptions
 {
 	SELECT_FILE = 1,
@@ -154,7 +145,7 @@ std::vector<ListNode*> createListsFromFile(std::ifstream& inFile) {
 }
 
 void mergeLists(const std::vector<ListNode*>& lists, std::ofstream& outFile) {
-	auto start = chrono::high_resolution_clock::now();
+	auto start = std::chrono::high_resolution_clock::now();
 
 	std::priority_queue<HeapNode, std::vector<HeapNode>, std::greater<>> minHeap;
 
@@ -181,10 +172,10 @@ void mergeLists(const std::vector<ListNode*>& lists, std::ofstream& outFile) {
 
 	outFile << std::endl;
 
-	auto end = chrono::high_resolution_clock::now();
-	chrono::duration<double> duration = end - start;
+	auto end = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> duration = end - start;
 
-	cout << "Время работы программы: " << duration.count() << " с" << endl;
+	std::cout << "Время работы программы: " << duration.count() << " с" << std::endl;
 }
 
 void freeLists(const std::vector<ListNode*>& lists) {
@@ -316,7 +307,7 @@ int linkedListsMerge()
 				inputFile.close();
 				outputFile.close();
 
-				std::cout << "Программа успешно завершила работу" << endl;
+				std::cout << "Программа успешно завершила работу" << std::endl;
 
 				system(("start " + std::string(outFileName)).c_str());
 
@@ -345,22 +336,22 @@ void setCursorPosition(int x, int y)
 void updateMenuSelection(int previousOption, int currentOption)
 {
 	setCursorPosition(0, previousOption);
-	cout << "  ";
+	std::cout << "  ";
 
 	setCursorPosition(0, currentOption);
-	cout << "->";
+	std::cout << "->";
 }
 
 void renderMenu(int selectedOption)
 {
-	cout << "==== [Вывод всех чисел в файле в порядке возрастания] ====" << std::endl;
-	cout << "  1. Указать входной и выходной файлы" << std::endl;
-	cout << "  2. Показать содержимое входного файла" << std::endl;
-	cout << "  3. Сортировка файла" << std::endl;
-	cout << "  4. Выход" << std::endl;
+	std::cout << "==== [Вывод всех чисел в файле в порядке возрастания] ====" << std::endl;
+	std::cout << "  1. Указать входной и выходной файлы" << std::endl;
+	std::cout << "  2. Показать содержимое входного файла" << std::endl;
+	std::cout << "  3. Сортировка файла" << std::endl;
+	std::cout << "  4. Выход" << std::endl;
 
 	setCursorPosition(0, selectedOption);
-	cout << "->";
+	std::cout << "->";
 }
 
 void exitOption(int selectedOption)
@@ -375,17 +366,17 @@ void showError(int code)
 	switch (code)
 	{
 	case PROGRAM_ERROR:
-		cout << "Выполняемая программа завершилась с ошибкой" << endl;
+		std::cout << "Выполняемая программа завершилась с ошибкой" << std::endl;
 		return;
 	case INPUT_FILE_OPEN_ERROR:
-		cout << "Входной файл не существует или находится в другом месте" << endl;
+		std::cout << "Входной файл не существует или находится в другом месте" << std::endl;
 		return;
 	case OUTPUT_FILE_OPEN_ERROR:
-		cout << "Возникли проблемы с созданием выходного файла" << endl;
+		std::cout << "Возникли проблемы с созданием выходного файла" << std::endl;
 		return;
 	default:
-		cout << "Ошибки с таким кодом не существует" << endl;
+		std::cout << "Ошибки с таким кодом не существует" << std::endl;
 		return;
 	}
-	cout << endl << "Программа завершила работу с ошибкой" << endl;
+	std::cout << std::endl << "Программа завершила работу с ошибкой" << std::endl;
 }
