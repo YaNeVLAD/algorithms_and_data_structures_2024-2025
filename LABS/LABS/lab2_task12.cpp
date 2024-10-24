@@ -18,25 +18,16 @@
 	5) повторять до победного (пока все числа не кончатся)
 --------------------------------------------------------------------------------------------------*/
 
-#include "lab2.h"
-
 #include <windows.h>
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <conio.h>
 #include <chrono>
-#include <queue>
 #include <cctype>
+#include <queue>
 
-{
-	ENTER = 13,
-	ARROW_UP = 72,
-	ARROW_DOWN = 80,
-	ARROW_LEFT = 75,
-	ARROW_RIGHT = 77,
-	SPECIAL_CODE = 224,
-};
+#include "lab2.h"
 
 enum ErrorCodes
 {
