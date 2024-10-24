@@ -29,6 +29,15 @@
 #include <queue>
 #include <cctype>
 
+{
+	ENTER = 13,
+	ARROW_UP = 72,
+	ARROW_DOWN = 80,
+	ARROW_LEFT = 75,
+	ARROW_RIGHT = 77,
+	SPECIAL_CODE = 224,
+};
+
 enum ErrorCodes
 {
 	PROGRAM_ERROR,
