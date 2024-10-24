@@ -29,24 +29,6 @@
 #include <queue>
 #include <cctype>
 
-enum MenuOptions
-{
-	SELECT_FILE = 1,
-	SHOW_FILE,
-	SORT,
-	EXIT
-};
-
-enum KeyCodes
-{
-	ENTER = 13,
-	ARROW_UP = 72,
-	ARROW_DOWN = 80,
-	ARROW_LEFT = 75,
-	ARROW_RIGHT = 77,
-	SPECIAL_CODE = 224,
-};
-
 enum ErrorCodes
 {
 	PROGRAM_ERROR,
@@ -63,7 +45,7 @@ struct ListNode {
 
 struct HeapNode {
 	int value;
-	size_t listIndex;
+	int listIndex;
 	ListNode* node;
 
 	bool operator>(const HeapNode& other) const
@@ -116,7 +98,7 @@ bool isSortedAndNumeric(const std::string& line, size_t lineNumber) {
 
 bool checkFile(std::ifstream& file) {
 	std::string line;
-	size_t lineNumber = 1;
+	int lineNumber = 1;
 	bool allCorrect = true;
 
 	while (std::getline(file, line) && allCorrect)
@@ -132,9 +114,8 @@ bool checkFile(std::ifstream& file) {
 	return allCorrect;
 }
 
-std::vector<ListNode*> createListsFromFile(std::ifstream& inFile) {
-	std::vector<ListNode*> lists;
-
+void createListsFromFile(std::ifstream& inFile, std::vector<ListNode*>& lists)
+{
 	std::string line;
 	while (std::getline(inFile, line))
 	{
@@ -149,16 +130,14 @@ std::vector<ListNode*> createListsFromFile(std::ifstream& inFile) {
 
 		lists.push_back(head);
 	}
-
-	return lists;
 }
 
 void mergeLists(const std::vector<ListNode*>& lists, std::ofstream& outFile) {
-	auto start = chrono::high_resolution_clock::now();
+	auto start = std::chrono::high_resolution_clock::now();
 
 	std::priority_queue<HeapNode, std::vector<HeapNode>, std::greater<>> minHeap;
 
-	for (size_t i = 0; i < lists.size(); ++i)
+	for (int i = 0; i < lists.size(); ++i)
 	{
 		if (lists[i])
 		{
@@ -181,10 +160,10 @@ void mergeLists(const std::vector<ListNode*>& lists, std::ofstream& outFile) {
 
 	outFile << std::endl;
 
-	auto end = chrono::high_resolution_clock::now();
-	chrono::duration<double> duration = end - start;
+	auto end = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> duration = end - start;
 
-	cout << "Время работы программы: " << duration.count() << " с" << endl;
+	std::cout << "Время работы программы: " << duration.count() << " с" << std::endl;
 }
 
 void freeLists(const std::vector<ListNode*>& lists) {
@@ -199,175 +178,80 @@ void freeLists(const std::vector<ListNode*>& lists) {
 	}
 }
 
-void setCursorPosition(int x, int y);
-void renderMenu(int selectedOption);
 void showError(int code);
-void updateMenuSelection(int previousOption, int currentOption);
-void exitOption(int selectedOption);
 
 int linkedListsMerge()
 {
-	int selectedOption = 1;
-	int previousOption = 1;
-
 	std::ifstream inputFile;
 	std::ofstream outputFile;
 
-	std::string inFileName = "";
-	std::string outFileName = "";
+	std::string inFileName;
+	std::string outFileName;
 
 	std::vector<ListNode*> lists;
 
 	system("cls");
-	renderMenu(selectedOption);
 
-	while (true)
+	std::cout << "Введите название входного и выходного файла: ";
+	std::cin >> inFileName >> outFileName;
+
+	inputFile.open(inFileName);
+	if (inputFile.is_open() == false)
 	{
-		int key = _getch();
-		if (key == SPECIAL_CODE)
-		{
-			key = _getch();
-			if (key == ARROW_UP || key == ARROW_RIGHT)
-			{
-				if (selectedOption > SELECT_FILE)
-				{
-					previousOption = selectedOption;
-					selectedOption--;
-				}
-				else
-				{
-					previousOption = selectedOption;
-					selectedOption = EXIT;
-				}
-			}
-			if (key == ARROW_DOWN || key == ARROW_LEFT)
-			{
-				if (selectedOption < EXIT)
-				{
-					previousOption = selectedOption;
-					selectedOption++;
-				}
-				else
-				{
-					previousOption = selectedOption;
-					selectedOption = SELECT_FILE;
-				}
-			}
-		}
-		if (key == ENTER) {
-			switch (selectedOption)
-			{
-			case SELECT_FILE:
-				system("cls");
-				std::cout << "Введите название входного и выходного файла: ";
-				std::cin >> inFileName >> outFileName;
+		showError(INPUT_FILE_OPEN_ERROR);
 
-				std::cout << std::endl << "Операция прошла успешно" << std::endl;
-				exitOption(selectedOption);
-
-				break;
-			case SHOW_FILE:
-				if (inFileName != "")
-				{
-					system(("start " + std::string(inFileName)).c_str());
-				}
-				else
-				{
-					system("cls");
-					std::cout << "Файл не выбран." << std::endl;
-					exitOption(selectedOption);
-				}
-
-				break;
-			case SORT:
-				system("cls");
-
-				inputFile.open(inFileName);
-				if (inputFile.is_open() == false)
-				{
-					showError(INPUT_FILE_OPEN_ERROR);
-					exitOption(selectedOption);
-
-					break;
-				}
-
-				std::cout << "Проверка файла..." << std::endl;
-				if (checkFile(inputFile) == false)
-				{
-					exitOption(selectedOption);
-
-					break;
-				}
-				std::cout << "Файл успешно прошёл проверку." << std::endl;
-
-				std::cout << std::endl << "Сортируем..." << std::endl;
-				lists = createListsFromFile(inputFile);
-				if (lists.empty())
-				{
-					std::cout << "Файл не выбран." << std::endl;
-					exitOption(selectedOption);
-
-					break;
-				}
-
-				mergeLists(lists, outputFile);
-				freeLists(lists);
-
-				inputFile.close();
-				outputFile.close();
-
-				std::cout << "Программа успешно завершила работу" << endl;
-
-				system(("start " + std::string(outFileName)).c_str());
-
-				exitOption(selectedOption);
-
-				break;
-			case EXIT:
-				inputFile.close();
-				outputFile.close();
-
-				return EXIT_SUCCESS;
-			}
-		}
-		updateMenuSelection(previousOption, selectedOption);
+		return EXIT_FAILURE;
 	}
-}
 
-void setCursorPosition(int x, int y)
-{
-	COORD coord{};
-	coord.X = x;
-	coord.Y = y;
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
+	outputFile.open(outFileName);
+	if (outputFile.is_open() == false)
+	{
+		showError(OUTPUT_FILE_OPEN_ERROR);
 
-void updateMenuSelection(int previousOption, int currentOption)
-{
-	setCursorPosition(0, previousOption);
-	cout << "  ";
+		return EXIT_FAILURE;
+	}
 
-	setCursorPosition(0, currentOption);
-	cout << "->";
-}
+	std::cout << "Проверка файла..." << std::endl;
 
-void renderMenu(int selectedOption)
-{
-	cout << "==== [Вывод всех чисел в файле в порядке возрастания] ====" << std::endl;
-	cout << "  1. Указать входной и выходной файлы" << std::endl;
-	cout << "  2. Показать содержимое входного файла" << std::endl;
-	cout << "  3. Сортировка файла" << std::endl;
-	cout << "  4. Выход" << std::endl;
+	if (checkFile(inputFile) == false)
+	{
+		showError(PROGRAM_ERROR);
 
-	setCursorPosition(0, selectedOption);
-	cout << "->";
-}
+		return EXIT_FAILURE;
+	}
+	inputFile.close();
 
-void exitOption(int selectedOption)
-{
-	system("pause");
-	system("cls");
-	renderMenu(selectedOption);
+	std::cout << "Файл успешно прошёл проверку." << std::endl;
+
+	inputFile.open(inFileName);
+	if (inputFile.is_open() == false)
+	{
+		showError(INPUT_FILE_OPEN_ERROR);
+
+		return EXIT_FAILURE;
+	}
+
+	std::cout << std::endl << "Сортируем..." << std::endl;
+
+	createListsFromFile(inputFile, lists);
+	if (lists.empty())
+	{
+		std::cout << "Файл пуст" << std::endl;
+
+		return EXIT_FAILURE;
+	}
+
+	mergeLists(lists, outputFile);
+	freeLists(lists);
+
+	std::cout << "Программа успешно завершила работу" << std::endl;
+
+	inputFile.close();
+	outputFile.close();
+
+	system(("start " + std::string(outFileName)).c_str());
+
+	return EXIT_SUCCESS;
 }
 
 void showError(int code)
@@ -375,17 +259,17 @@ void showError(int code)
 	switch (code)
 	{
 	case PROGRAM_ERROR:
-		cout << "Выполняемая программа завершилась с ошибкой" << endl;
+		std::cout << "Выполняемая программа завершилась с ошибкой" << std::endl;
 		return;
 	case INPUT_FILE_OPEN_ERROR:
-		cout << "Входной файл не существует или находится в другом месте" << endl;
+		std::cout << "Входной файл не существует или находится в другом месте" << std::endl;
 		return;
 	case OUTPUT_FILE_OPEN_ERROR:
-		cout << "Возникли проблемы с созданием выходного файла" << endl;
+		std::cout << "Возникли проблемы с созданием выходного файла" << std::endl;
 		return;
 	default:
-		cout << "Ошибки с таким кодом не существует" << endl;
+		std::cout << "Ошибки с таким кодом не существует" << std::endl;
 		return;
 	}
-	cout << endl << "Программа завершила работу с ошибкой" << endl;
+	std::cout << std::endl << "Программа завершила работу с ошибкой" << std::endl;
 }
