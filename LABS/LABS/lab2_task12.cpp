@@ -43,17 +43,6 @@ struct ListNode {
 	ListNode(int val) : value(val), next(nullptr) {}
 };
 
-struct HeapNode {
-	int value;
-	int listIndex;
-	ListNode* node;
-
-	bool operator>(const HeapNode& other) const
-	{
-		return value > other.value;
-	}
-};
-
 void append(ListNode*& head, int value) {
 	if (!head)
 	{
@@ -135,27 +124,26 @@ void createListsFromFile(std::ifstream& inFile, std::vector<ListNode*>& lists)
 void mergeLists(const std::vector<ListNode*>& lists, std::ofstream& outFile) {
 	auto start = std::chrono::high_resolution_clock::now();
 
-	std::priority_queue<HeapNode, std::vector<HeapNode>, std::greater<>> minHeap;
+	std::vector<ListNode*> currentNodes = lists;
 
-	for (int i = 0; i < lists.size(); ++i)
-	{
-		if (lists[i])
-		{
-			minHeap.push({ lists[i]->value, i, lists[i] });
+	while (true) {
+		int minIndex = -1;
+		int minValue = MAXINT;
+
+		for (int i = 0; i < currentNodes.size(); ++i) {
+			if (currentNodes[i] && currentNodes[i]->value < minValue) {
+				minValue = currentNodes[i]->value;
+				minIndex = i;
+			}
 		}
-	}
 
-	while (!minHeap.empty())
-	{
-		HeapNode top = minHeap.top();
-		minHeap.pop();
-
-		outFile << top.value << " ";
-
-		if (top.node->next)
-		{
-			minHeap.push({ top.node->next->value, top.listIndex, top.node->next });
+		if (minIndex == -1) {
+			break;
 		}
+
+		outFile << minValue << " ";
+
+		currentNodes[minIndex] = currentNodes[minIndex]->next;
 	}
 
 	outFile << std::endl;
