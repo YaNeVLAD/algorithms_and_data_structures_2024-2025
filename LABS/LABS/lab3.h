@@ -2,4 +2,4 @@
 
 #pragma once
 
-int familyTreeSearch(std::string firstPersonName, std::string secondPersonName);
+int familyTreeSearch(const std::string& fileName, const std::string& firstName, const std::string& secondName);

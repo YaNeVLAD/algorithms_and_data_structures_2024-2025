@@ -43,7 +43,7 @@ struct ListNode {
 	ListNode(int val) : value(val), next(nullptr) {}
 };
 
-void append(ListNode*& head, int value) {
+static void append(ListNode*& head, int value) {
 	if (!head)
 	{
 		head = new ListNode(value);
@@ -59,7 +59,7 @@ void append(ListNode*& head, int value) {
 	}
 }
 
-bool isSortedAndNumeric(const std::string& line, size_t lineNumber) {
+static bool isSortedAndNumeric(const std::string& line, size_t lineNumber) {
 	std::istringstream iss(line);
 	int prev = MININT;
 	int current;
@@ -85,7 +85,7 @@ bool isSortedAndNumeric(const std::string& line, size_t lineNumber) {
 	return true;
 }
 
-bool checkFile(std::ifstream& file) {
+static bool checkFile(std::ifstream& file) {
 	std::string line;
 	int lineNumber = 1;
 	bool allCorrect = true;
@@ -103,7 +103,7 @@ bool checkFile(std::ifstream& file) {
 	return allCorrect;
 }
 
-void createListsFromFile(std::ifstream& inFile, std::vector<ListNode*>& lists)
+static void createListsFromFile(std::ifstream& inFile, std::vector<ListNode*>& lists)
 {
 	std::string line;
 	while (std::getline(inFile, line))
@@ -121,7 +121,7 @@ void createListsFromFile(std::ifstream& inFile, std::vector<ListNode*>& lists)
 	}
 }
 
-void mergeLists(const std::vector<ListNode*>& lists, std::ofstream& outFile) {
+static void mergeLists(const std::vector<ListNode*>& lists, std::ofstream& outFile) {
 	auto start = std::chrono::high_resolution_clock::now();
 
 	std::vector<ListNode*> currentNodes = lists;
@@ -154,7 +154,7 @@ void mergeLists(const std::vector<ListNode*>& lists, std::ofstream& outFile) {
 	std::cout << "Âנולÿ נאבמעû ןנמדנאללû: " << duration.count() << " ס" << std::endl;
 }
 
-void freeLists(const std::vector<ListNode*>& lists) {
+static void freeLists(const std::vector<ListNode*>& lists) {
 	for (ListNode* head : lists)
 	{
 		while (head)

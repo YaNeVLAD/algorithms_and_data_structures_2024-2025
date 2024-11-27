@@ -4,7 +4,9 @@
 #include <iostream>
 #include <fstream>
 #include <conio.h>
+
 //Programs
+
 #include "lab1.h";
 #include "lab2.h";
 #include "lab3.h";
@@ -119,14 +121,24 @@ int main()
 			}
 			case LINKED_LISTS_MERGE:
 			{
-				linkedListsMerge();
+				if (linkedListsMerge() == EXIT_FAILURE)
+				{
+					showErrorMessage(PROGRAM_ERROR);
+					system("pause");
+					break;
+				}
 
 				system("pause");
 				break;
 			}
 			case FAMILY_TREE_SEARCH:
 			{
-				//familyTreeSearch();
+				if (familyTreeSearch("tree.txt", "C", "Y") == EXIT_FAILURE)
+				{
+					showErrorMessage(PROGRAM_ERROR);
+					system("pause");
+					break;
+				}
 
 				system("pause");
 				break;
