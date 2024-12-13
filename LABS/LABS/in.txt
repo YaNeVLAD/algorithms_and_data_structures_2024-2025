@@ -1,5 +1,8 @@
 A B 3
 D A 1
 B C 4
-C E 5
+C E 1
 E D 10
+E B 8
+B E 8
+E A 4

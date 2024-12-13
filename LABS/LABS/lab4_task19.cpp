@@ -1,7 +1,7 @@
 /*--------------------------------------------------------------------------------------------------
 	Задание: Имеется сеть автомобильных дорог. По  некоторым дорогам
-	можно  проехать  только  в одном  направлении. Известна  длина 
-	каждой дороги, причем она может быть разной в  зависимости  от 
+	можно  проехать  только  в одном  направлении. Известна  длина
+	каждой дороги, причем она может быть разной в  зависимости  от
 	направления. С помощью алгоритма Дейкстры найти цикл минимальной
 	длины из заданного города (9).
 
@@ -51,10 +51,13 @@ struct Result
 	Cycle cycle;
 };
 
-static std::pair<Distances, Path> findShortestDistances(const Graph& graph, const Node& start)
+static Result findShortestCycle(const Graph& graph, const Node& start)
 {
 	Distances distances;
 	Path path;
+	
+	Cycle cycle;
+	int shortestCycleLen = INT_MAX;
 
 	for (const auto& node : graph)
 	{
@@ -75,53 +78,32 @@ static std::pair<Distances, Path> findShortestDistances(const Graph& graph, cons
 		for (const auto& edge : graph.at(currLine.endPoint))
 		{
 			int newDistance = currLine.length + edge.length;
+
 			if (newDistance < distances[edge.endPoint])
 			{
-				path[edge.endPoint] = currLine.endPoint;
-
 				distances[edge.endPoint] = newDistance;
+				path[edge.endPoint] = currLine.endPoint;
 				queue.push(Line(edge.endPoint, newDistance));
 			}
-		}
-	}
 
-	return { distances, path };
-}
-
-static Result findShortestCycle(const Graph& graph, const Node& start)
-{
-	Cycle cycle;
-	int shortestLength = INT_MAX;
-
-	for (const auto& edge : graph.at(start))
-	{
-		Graph modifiedGraph = graph;
-		modifiedGraph[start].erase(remove(modifiedGraph[start].begin(), modifiedGraph[start].end(), edge), modifiedGraph[start].end());
-
-		auto [distances, path] = findShortestDistances(modifiedGraph, edge.endPoint);
-
-		if (distances[start] != INT_MAX)
-		{
-			int cycleLength = distances[start] + edge.length;
-			if (cycleLength < shortestLength)
+			if (edge.endPoint == start && newDistance < shortestCycleLen)
 			{
-				shortestLength = cycleLength;
+				shortestCycleLen = newDistance;
 
-				cycle.clear();
-				Node current = start;
-				while (current != edge.endPoint)
+				cycle = { start };
+				Node current = currLine.endPoint;
+				while (current != start)
 				{
 					cycle.push_back(current);
 					current = path[current];
 				}
-
-				cycle.push_back(edge.endPoint);
+				cycle.push_back(start);
 				std::reverse(cycle.begin(), cycle.end());
 			}
 		}
 	}
 
-	return Result(shortestLength, cycle);
+	return Result(shortestCycleLen, cycle);
 }
 
 static void printToConsole(Result result)
@@ -134,9 +116,9 @@ static void printToConsole(Result result)
 	{
 		std::cout << "Минимальная длина цикла: " << result.length << std::endl;
 		std::cout << "Путь: " << std::endl;
-		for (const auto& node : result.cycle)
+		for (size_t i = 0; i < result.cycle.size(); ++i)
 		{
-			std::cout << node << (node == result.cycle.back() ? "" : "->");
+			std::cout << result.cycle[i] << (i == result.cycle.size() - 1 ? "" : "->");
 		}
 		std::cout << std::endl;
 	}
@@ -149,20 +131,27 @@ static void printToFile(const std::string& inputName, Result result)
 	std::ofstream outFile(outFileName);
 	if (outFile.is_open())
 	{
+		std::cout << "Данные сохранены в " << outFileName << std::endl;
+		if (result.length == INT_MAX)
+		{
+			outFile << "Цикл из заданного города не найден" << std::endl;
+			return;
+		}
 		outFile << "Минимальная длина цикла: " << result.length << std::endl;
 		outFile << "Путь: " << std::endl;
-		for (const auto& node : result.cycle)
+		size_t cycleLen = result.cycle.size();
+		for (size_t i = 0; i < cycleLen; ++i)
 		{
-			outFile << node << (node == result.cycle.back() ? "" : "->");
+			outFile << result.cycle[i] << (i == cycleLen - 1 ? "" : "->");
 		}
-		outFile << std::endl;
-		outFile.close();
-		std::cout << "Данные сохранены в " << outFileName << std::endl;
 	}
 	else
 	{
 		std::cerr << "Не удалось открыть файл для записи" << std::endl;
 	}
+
+	outFile << std::endl;
+	outFile.close();
 }
 
 int shortestGraphCycle()
