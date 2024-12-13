@@ -1,5 +1,6 @@
 #include <iostream>
+#include <fstream>
 
 #pragma once
 
-int familyTreeSearch(const std::string& fileName, const std::string& firstName, const std::string& secondName);
+int familyTreeSearch(std::wifstream& input, const std::wstring& firstName, const std::wstring& secondName);

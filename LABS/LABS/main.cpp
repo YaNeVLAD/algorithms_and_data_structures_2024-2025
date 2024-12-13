@@ -5,11 +5,10 @@
 #include <fstream>
 #include <conio.h>
 
-//Programs
-
-#include "lab1.h";
-#include "lab2.h";
-#include "lab3.h";
+#include "lab1.h"
+#include "lab2.h"
+#include "lab3.h"
+#include "lab4.h"
 
 using namespace std;
 
@@ -17,6 +16,7 @@ enum MenuOptions {
 	REVERSE_WORDS_IN_FILE,
 	LINKED_LISTS_MERGE,
 	FAMILY_TREE_SEARCH,
+	SHORTEST_GRAPH_CYCLE,
 	EXIT
 };
 
@@ -133,7 +133,36 @@ int main()
 			}
 			case FAMILY_TREE_SEARCH:
 			{
-				if (familyTreeSearch("tree.txt", "C", "Y") == EXIT_FAILURE)
+				string inputFileName;
+				wstring	firstName, secondName;
+
+				cout << "Введите путь к входному файлу" << endl;
+				cin >> inputFileName;
+
+				wifstream inputFile(inputFileName);
+				if (inputFile.is_open() == false)
+				{
+					showErrorMessage(INPUT_FILE_OPEN_ERROR);
+					system("pause");
+					break;
+				}
+
+				cout << "Введите два имени для поиска в родовом дереве" << endl;
+				wcin >> firstName >> secondName;
+
+				if (familyTreeSearch(inputFile, firstName, secondName) == EXIT_FAILURE)
+				{
+					showErrorMessage(PROGRAM_ERROR);
+					system("pause");
+					break;
+				}
+
+				system("pause");
+				break;
+			}
+			case SHORTEST_GRAPH_CYCLE:
+			{
+				if (shortestGraphCycle() == EXIT_FAILURE)
 				{
 					showErrorMessage(PROGRAM_ERROR);
 					system("pause");
@@ -158,6 +187,7 @@ void menu(int selectedOption)
 	cout << (selectedOption == REVERSE_WORDS_IN_FILE ? "-> " : "   ") << "Л.1 Переворот слов в файле" << endl;
 	cout << (selectedOption == LINKED_LISTS_MERGE ? "-> " : "   ") << "Л.2 Слияние связных списков" << endl;
 	cout << (selectedOption == FAMILY_TREE_SEARCH ? "-> " : "   ") << "Л.3 Определение отношений двух родственников" << endl;
+	cout << (selectedOption == SHORTEST_GRAPH_CYCLE ? "-> " : "   ") << "Л.4 Нахождение цикла минимальной длины из вершины" << endl;
 	cout << (selectedOption == EXIT ? "-> " : "   ") << "Выход" << endl;
 }
 
