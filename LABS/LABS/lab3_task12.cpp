@@ -1,15 +1,15 @@
 /*--------------------------------------------------------------------------------------------------
-	Задание: Имеется дерево, корень которого соответствует
-	основателю  рода.  Сыновья  каждой  вершины  задают  сыновей и
-	дочерей  соответствующего  человека.  Указываются  имена  двух
-	человек  (например,  А  и  В).  Сообщить,  какая  из следующих
-	ситуаций имеет место:
-	   1) А предок В;
-	   2) В предок А;
-	   3) А и В имеют ближайшего общего предка С (9).
+	Р—Р°РґР°РЅРёРµ: РРјРµРµС‚СЃСЏ РґРµСЂРµРІРѕ, РєРѕСЂРµРЅСЊ РєРѕС‚РѕСЂРѕРіРѕ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚
+	РѕСЃРЅРѕРІР°С‚РµР»СЋ  СЂРѕРґР°.  РЎС‹РЅРѕРІСЊСЏ  РєР°Р¶РґРѕР№  РІРµСЂС€РёРЅС‹  Р·Р°РґР°СЋС‚  СЃС‹РЅРѕРІРµР№ Рё
+	РґРѕС‡РµСЂРµР№  СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РµРіРѕ  С‡РµР»РѕРІРµРєР°.  РЈРєР°Р·С‹РІР°СЋС‚СЃСЏ  РёРјРµРЅР°  РґРІСѓС…
+	С‡РµР»РѕРІРµРє  (РЅР°РїСЂРёРјРµСЂ,  Рђ  Рё  Р’).  РЎРѕРѕР±С‰РёС‚СЊ,  РєР°РєР°СЏ  РёР· СЃР»РµРґСѓСЋС‰РёС…
+	СЃРёС‚СѓР°С†РёР№ РёРјРµРµС‚ РјРµСЃС‚Рѕ:
+	   1) Рђ РїСЂРµРґРѕРє Р’;
+	   2) Р’ РїСЂРµРґРѕРє Рђ;
+	   3) Рђ Рё Р’ РёРјРµСЋС‚ Р±Р»РёР¶Р°Р№С€РµРіРѕ РѕР±С‰РµРіРѕ РїСЂРµРґРєР° РЎ (9).
 
-	Автор: Ковалев Владислав ПС-21
-	Среда выполнение: Visual Studio 2022
+	РђРІС‚РѕСЂ: РљРѕРІР°Р»РµРІ Р’Р»Р°РґРёСЃР»Р°РІ РџРЎ-21
+	РЎСЂРµРґР° РІС‹РїРѕР»РЅРµРЅРёРµ: Visual Studio 2022
 --------------------------------------------------------------------------------------------------*/
 
 #define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
@@ -98,7 +98,7 @@ static NodePtr CreateTree(std::wifstream& file)
 	file.imbue(std::locale(std::locale(), new std::codecvt_utf8<wchar_t>));
 	if (!file.is_open())
 	{
-		throw std::runtime_error("Не удалось открыть файл ");
+		throw std::runtime_error("РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» ");
 	}
 
 	NodePtr root = nullptr;
@@ -177,30 +177,30 @@ int familyTreeSearch(std::wifstream& input, const std::wstring& firstName, const
 
 		if (!first)
 		{
-			std::wcout << L"Не удалось найти человека с именем " << firstName << std::endl;
+			std::wcout << L"РќРµ СѓРґР°Р»РѕСЃСЊ РЅР°Р№С‚Рё С‡РµР»РѕРІРµРєР° СЃ РёРјРµРЅРµРј " << firstName << std::endl;
 			return EXIT_FAILURE;
 		}
 
 		if (!second)
 		{
-			std::wcout << L"Не удалось найти человека с именем " << secondName << std::endl;
+			std::wcout << L"РќРµ СѓРґР°Р»РѕСЃСЊ РЅР°Р№С‚Рё С‡РµР»РѕРІРµРєР° СЃ РёРјРµРЅРµРј " << secondName << std::endl;
 			return EXIT_FAILURE;
 		}
 
 		if (IsAncestor(first, second))
 		{
-			std::wcout << first->name << L" предок " << second->name << std::endl;
+			std::wcout << first->name << L" РїСЂРµРґРѕРє " << second->name << std::endl;
 		}
 		else if (IsAncestor(second, first))
 		{
-			std::wcout << second->name << L" предок " << first->name << std::endl;
+			std::wcout << second->name << L" РїСЂРµРґРѕРє " << first->name << std::endl;
 		}
 		else
 		{
 			const TreeNode* commonAncestor = FindCommonAncestor(first, second);
 			if (commonAncestor)
 			{
-				std::wcout << commonAncestor->name << L" - общий предок " << first->name << L" и " << second->name << std::endl;
+				std::wcout << commonAncestor->name << L" - РѕР±С‰РёР№ РїСЂРµРґРѕРє " << first->name << L" Рё " << second->name << std::endl;
 			}
 		}
 	}

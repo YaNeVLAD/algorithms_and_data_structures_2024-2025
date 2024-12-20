@@ -9,6 +9,7 @@
 #include "lab2.h"
 #include "lab3.h"
 #include "lab4.h"
+#include "lab5.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ enum MenuOptions {
 	LINKED_LISTS_MERGE,
 	FAMILY_TREE_SEARCH,
 	SHORTEST_GRAPH_CYCLE,
+	AVL_TREE,
 	EXIT
 };
 
@@ -172,6 +174,15 @@ int main()
 				system("pause");
 				break;
 			}
+			case AVL_TREE:
+				system("cls");
+				if (avlTree() == EXIT_FAILURE)
+				{
+					showErrorMessage(PROGRAM_ERROR);
+					system("pause");
+					break;
+				}
+				break;
 
 			case EXIT:
 				return EXIT_SUCCESS;
@@ -188,6 +199,7 @@ void menu(int selectedOption)
 	cout << (selectedOption == LINKED_LISTS_MERGE ? "-> " : "   ") << "Л.2 Слияние связных списков" << endl;
 	cout << (selectedOption == FAMILY_TREE_SEARCH ? "-> " : "   ") << "Л.3 Определение отношений двух родственников" << endl;
 	cout << (selectedOption == SHORTEST_GRAPH_CYCLE ? "-> " : "   ") << "Л.4 Нахождение цикла минимальной длины из вершины" << endl;
+	cout << (selectedOption == AVL_TREE ? "-> " : "   ") << "Л.5 Работа с АВЛ-деревом" << endl;
 	cout << (selectedOption == EXIT ? "-> " : "   ") << "Выход" << endl;
 }
 

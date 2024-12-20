@@ -144,16 +144,20 @@
       <LanguageStandard_C Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdc17</LanguageStandard_C>
     </ClCompile>
     <ClCompile Include="lab4_task19.cpp" />
+    <ClCompile Include="lab5_task13.cpp" />
     <ClCompile Include="main.cpp">
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp20</LanguageStandard>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp20</LanguageStandard>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AVLTree.hpp" />
     <ClInclude Include="lab2.h" />
     <ClInclude Include="lab1.h" />
     <ClInclude Include="lab3.h" />
     <ClInclude Include="lab4.h" />
+    <ClInclude Include="lab5.h" />
+    <ClInclude Include="TreePrinter.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="in.txt" />
