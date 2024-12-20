@@ -27,9 +27,9 @@ static void ShowMenu()
 	std::cout << "2. Ввести числа из файла\n";
 	std::cout << "3. Сгенерировать случайное дерево\n";
 	std::cout << "4. Вывести дерево\n";
-	std::cout << "5. Удалить элемент\n";
-	std::cout << "6. Вставить элемент\n";
-	std::cout << "7. Заменить элемент\n";
+	std::cout << "5. Вставить элемент\n";
+	std::cout << "6. Заменить элемент\n";
+	std::cout << "7. Удалить элемент\n";
 	std::cout << "8. Очистить дерево\n";
 	std::cout << "9. Выход\n";
 	std::cout << "Выберите действие: ";
@@ -108,7 +108,7 @@ static void GenerateRandomTree(AVLTree<int>& tree)
 	{
 		vec[i] = i + 1;
 	}
-	
+
 	std::random_device rd;
 	std::mt19937_64 g(rd());
 
@@ -122,7 +122,7 @@ int avlTree() {
 	int choice;
 
 	while (true) {
-		system("cls");
+		//system("cls");
 		ShowMenu();
 		std::cin >> choice;
 
@@ -153,13 +153,13 @@ int avlTree() {
 			system("pause");
 			break;
 		case 5:
-			RemoveElement(tree);
-			break;
-		case 6:
 			InsertElement(tree);
 			break;
-		case 7:
+		case 6:
 			HandleReplace(tree);
+			break;
+		case 7:
+			RemoveElement(tree);
 			break;
 		case 8:
 			tree.Clear();
